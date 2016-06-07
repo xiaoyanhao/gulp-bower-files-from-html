@@ -1,0 +1,30 @@
+{
+  "name": "gulp-bower-files-from-html",
+  "version": "1.0.0",
+  "description": "Extract the bower files from script tags in html files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoyanhao/gulp-bower-files-from-html.git"
+  },
+  "keywords": [
+    "bower",
+    "gulp",
+    "gulpplugin",
+    "gulpfriendly",
+    "main-bower-files"
+  ],
+  "author": "xiaoyanhao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xiaoyanhao/gulp-bower-files-from-html/issues"
+  },
+  "homepage": "https://github.com/xiaoyanhao/gulp-bower-files-from-html#readme",
+  "dependencies": {
+    "gulp-util": "^3.0.7",
+    "through2": "^2.0.1"
+  }
+}
