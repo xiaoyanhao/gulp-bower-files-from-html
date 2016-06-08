@@ -4,7 +4,7 @@
   "description": "Extract the bower files from script tags in html files",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ./test/index.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,12 @@
   "dependencies": {
     "gulp-util": "^3.0.7",
     "through2": "^2.0.1"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^2.2.0",
+    "mocha": "^2.5.3",
+    "stream-assert": "^2.0.3"
   }
 }
