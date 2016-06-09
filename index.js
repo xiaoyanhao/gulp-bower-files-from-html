@@ -43,15 +43,16 @@ function dealWithFileBuffer(file, self) {
   });
 
   paths.forEach(function(path) {
-    var stats = fs.statSync(path);
-    if (stats.isFile()) {
-      var bower_file = file.clone();
-      bower_file.path = path;
-      bower_file.contents = fs.readFileSync(path);
-      // make sure the file goes through the next gulp plugin
-      self.push(bower_file);
-
-    } else {
+    try {
+      var stats = fs.statSync(path);
+      if (stats.isFile()) {
+        var bower_file = file.clone();
+        bower_file.path = path;
+        bower_file.contents = fs.readFileSync(path);
+        // make sure the file goes through the next gulp plugin
+        self.push(bower_file);
+      }
+    } catch(err) {
       self.emit('error', new PluginError(PLUGIN_NAME, path + ' is not found!'));
     }
   });
