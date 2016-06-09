@@ -34,7 +34,7 @@ function dealWithFileBuffer(file, self) {
   var html = file.contents.toString();
   // just ignore comments in html
   html = html.replace(COMMENT, '');
-  var scripts = html.match(SCRIPT);
+  var scripts = html.match(SCRIPT) || [];
   var paths = [];
 
   scripts.forEach(function(script) {
