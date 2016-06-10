@@ -9,6 +9,8 @@ var fs = require('fs');
 var PLUGIN_NAME = 'gulp-bower-files-from-html';
 var SCRIPT = /<script([^>]*)>\s*<\/script>/gi;
 var SRC = /src=['"]([^"']*)['"]/i;
+var LINK = /<link([^>]*)>/gi;
+var HREF = /href=['"]([^"']*)['"]/i;
 var COMMENT = /<!--[^]*?-->/g;
 var BOWER = /bower_components/;
 var BOWER_PATH = null;
@@ -29,22 +31,29 @@ function getAbsolutePath(path) {
   return __dirname + '/' + dir;
 }
 
-// deal with html file buffer
-function dealWithFileBuffer(file, self) {
-  var html = file.contents.toString();
-  // just ignore comments in html
-  html = html.replace(COMMENT, '');
-  var scripts = html.match(SCRIPT) || [];
-  var paths = [];
-
-  scripts.forEach(function(script) {
-    var path = script.match(SRC);
+// get the paths of all valid bower files
+function validateBowerFiles(paths, elements, attr) {
+  elements.forEach(function(element) {
+    var path = element.match(attr);
     if (path != null && BOWER.test(path[1])) {
       path = path[1].split(BOWER)[1];
       path = BOWER_PATH + path;
       paths.push(path);
     }
   });
+}
+
+// deal with html file buffer
+function dealWithFileBuffer(file, self) {
+  var html = file.contents.toString();
+  // just ignore comments in html
+  html = html.replace(COMMENT, '');
+  var scripts = html.match(SCRIPT) || [];
+  var links = html.match(LINK) || [];
+  var paths = [];
+
+  validateBowerFiles(paths, scripts, SRC);
+  validateBowerFiles(paths, links, HREF);
 
   paths.forEach(function(path) {
     try {

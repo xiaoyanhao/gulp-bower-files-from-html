@@ -1,0 +1,25 @@
+{
+  "name": "test",
+  "main": "index.js",
+  "homepage": "https://github.com/xiaoyanhao/gulp-bower-files-from-html",
+  "authors": [
+    "xiaoyanhao"
+  ],
+  "description": "To test the plugin \"gulp-bower-files-from-html\"",
+  "keywords": [
+    "test"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "react": "^15.1.0",
+    "github-markdown-css": "^2.3.0",
+    "highlightjs": "^9.4.0"
+  }
+}
