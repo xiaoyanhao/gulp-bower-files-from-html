@@ -1,10 +1,10 @@
 {
   "name": "gulp-bower-files-from-html",
   "version": "1.0.0",
-  "description": "Extract the bower files from script and link tags in html",
+  "description": "Extract the bower files from the html files according to script and link tags.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./test/index.js"
+    "test": "cd test; gulp"
   },
   "repository": {
     "type": "git",
