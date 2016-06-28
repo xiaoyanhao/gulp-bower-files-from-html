@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "node"
+  - "iojs"
+  - "6"
+  - "5"
+  - "4"
+  - "0"
+before_script:
+  - npm install -g gulp
+  - cd test
+script: gulp
