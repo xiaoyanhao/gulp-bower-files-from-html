@@ -4,6 +4,7 @@ var through = require('through2');
 var gutil = require('gulp-util');
 var PluginError = gutil.PluginError;
 var fs = require('fs');
+var vinyl = require('vinyl');
 
 // Consts
 var PLUGIN_NAME = 'gulp-bower-files-from-html';
@@ -13,39 +14,20 @@ var LINK = /<link([^>]*)>/gi;
 var HREF = /href=['"]([^"']*)['"]/i;
 var COMMENT = /<!--[^]*?-->/g;
 var BOWER = /bower_components/;
-var BOWER_PATH = null;
-
-// get the absolute path of bower components
-function getAbsolutePath(path) {
-  var dir = 'bower_components';
-
-  if (path) {
-    var len = path.length;
-    if (path[len - 1] == '/') {
-      dir = path.slice(0, -1);
-    } else {
-      dir = path;
-    }
-  }
-
-  return __dirname + '/' + dir;
-}
 
 // get the paths of all valid bower files
 function validateBowerFiles(paths, elements, attr) {
   elements.forEach(function(element) {
     var path = element.match(attr);
     if (path != null && BOWER.test(path[1])) {
-      path = path[1].split(BOWER)[1];
-      path = BOWER_PATH + path;
-      paths.push(path);
+      paths.push(path[1]);
     }
   });
 }
 
 // deal with html file buffer
-function dealWithFileBuffer(file, self) {
-  var html = file.contents.toString();
+function getBowerFiles(contents, file, self) {
+  var html = contents.toString();
   // just ignore comments in html
   html = html.replace(COMMENT, '');
   var scripts = html.match(SCRIPT) || [];
@@ -56,12 +38,22 @@ function dealWithFileBuffer(file, self) {
   validateBowerFiles(paths, links, HREF);
 
   paths.forEach(function(path) {
+    path = file.base + path;
     try {
       var stats = fs.statSync(path);
       if (stats.isFile()) {
-        var bower_file = file.clone();
-        bower_file.path = path;
-        bower_file.contents = fs.readFileSync(path);
+        var bower_file = new vinyl({
+          base: './',
+          path: path,
+          stat: stats
+        });
+
+        if (file.isStream()) {
+          bower_file.contents = fs.createReadStream(path);
+        }
+        if (file.isBuffer()) {
+          bower_file.contents = fs.readFileSync(path);
+        }
         // make sure the file goes through the next gulp plugin
         self.push(bower_file);
       }
@@ -72,9 +64,7 @@ function dealWithFileBuffer(file, self) {
 }
 
 // Plugin level function(dealing with files)
-function gulpBowerFilesFromHtml(bower_path) {
-  BOWER_PATH = getAbsolutePath(bower_path);
-
+function gulpBowerFilesFromHtml() {
   // Creating a stream through which each file will pass
   var stream = through.obj(function(file, enc, cb) {
     if (file.isNull()) {
@@ -85,16 +75,15 @@ function gulpBowerFilesFromHtml(bower_path) {
     if (file.isStream()) {
       var self = this;
       file.contents.on('data', function(chunck) {
-        // stream to buffer
-        file.contents = chunck;
-        dealWithFileBuffer(file, self);
+        getBowerFiles(chunck, file, self);
         // tell the stream engine that we are done with this file
         cb();
       });
     }
 
     if (file.isBuffer()) {
-      dealWithFileBuffer(file, this);
+      var contents = file.contents;
+      getBowerFiles(contents, file, this);
       cb();
     }
   });

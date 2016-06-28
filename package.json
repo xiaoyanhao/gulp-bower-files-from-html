@@ -1,7 +1,7 @@
 {
   "name": "gulp-bower-files-from-html",
   "version": "1.0.0",
-  "description": "Extract the bower files from script tags in html files",
+  "description": "Extract the bower files from script and link tags in html",
   "main": "index.js",
   "scripts": {
     "test": "mocha ./test/index.js"
@@ -25,7 +25,8 @@
   "homepage": "https://github.com/xiaoyanhao/gulp-bower-files-from-html#readme",
   "dependencies": {
     "gulp-util": "^3.0.7",
-    "through2": "^2.0.1"
+    "through2": "^2.0.1",
+    "vinyl": "^1.1.1"
   },
   "devDependencies": {
     "assert": "^1.4.1",
