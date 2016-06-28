@@ -4,7 +4,7 @@ Extract the bower files from the html files according to script and link tags.
 ```
 npm install --save-dev gulp-bower-files-from-html
 ```
-### Usage
+## Usage
 ```js
 var gulp = require('gulp');
 var gulpBowerFilesFromHtml = require('gulp-bower-files-from-html');
