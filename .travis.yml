@@ -9,4 +9,4 @@ node_js:
 before_script:
   - npm install -g gulp
   - cd test
-script: gulp
+script: gulp mocha
