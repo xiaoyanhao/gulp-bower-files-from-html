@@ -10,7 +10,7 @@ var gulp = require('gulp');
 var gulpBowerFilesFromHtml = require('gulp-bower-files-from-html');
 
 gulp.task('bower', function() {
-  return gulp.src('./index.html')
+  return gulp.src('./index.html', {base: './'})
     .pipe(gulpBowerFilesFromHtml())
     .pipe(gulp.dest('./dist'));
 });

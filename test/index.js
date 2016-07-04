@@ -15,7 +15,7 @@ describe('gulp-bower-files-from-html', function() {
 
   describe('in buffer mode', function() {
     it('should ignore when no bower files are used', function(done) {
-      gulp.src('./html/0.html', {buffer: true})
+      gulp.src('./src/0.html', {buffer: true, base: './'})
         .pipe(gulpBowerFilesFromHtml())
         .pipe(streamAssert.length(0))
         .pipe(streamAssert.end(done));
@@ -25,14 +25,14 @@ describe('gulp-bower-files-from-html', function() {
 
   describe('in stream mode', function() {
     it('should copy three scripts and one css', function(done) {
-      gulp.src('./html/1.html', {buffer: false})
+      gulp.src('./src/1.html', {buffer: false, base: './'})
         .pipe(gulpBowerFilesFromHtml())
         .pipe(streamAssert.length(4))
         .pipe(streamAssert.end(done));
     });
 
     it('should assert error when bower files are not found', function(done) {
-      gulp.src('./html/2.html', {buffer: false})
+      gulp.src('./src/2.html', {buffer: false, base: './'})
         .pipe(gulpBowerFilesFromHtml())
         .on('error', function(err) {
           assert.ifError(!err);
